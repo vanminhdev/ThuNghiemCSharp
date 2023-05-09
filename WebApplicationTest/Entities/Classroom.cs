@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleAppTest.Entities
+namespace WebApplicationTest.Entities
 {
     public class Classroom
     {
@@ -15,5 +15,8 @@ namespace ConsoleAppTest.Entities
         [Required]
         [MaxLength(512)]
         public string? Name { get; set; }
+
+        public List<Student> Students { get; } = new();
+        public List<StudentClassroom> StudentClasses { get; } = new();
     }
 }

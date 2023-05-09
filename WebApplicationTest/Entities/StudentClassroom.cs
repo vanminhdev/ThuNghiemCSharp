@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleAppTest.Entities
+namespace WebApplicationTest.Entities
 {
     public class StudentClassroom
     {
@@ -14,7 +15,7 @@ namespace ConsoleAppTest.Entities
         public int StudentId { get; set; }
         public int ClassroomId { get; set; }
 
-        //public Student Student { get; set; } = null!;
-        //public Classroom Classroom { get; set; } = null!;
+        public Student Student { get; set; } = null!;
+        public Classroom Classroom { get; set; } = null!;
     }
 }

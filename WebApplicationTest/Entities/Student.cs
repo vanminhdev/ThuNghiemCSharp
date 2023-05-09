@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleAppTest.Entities
+namespace WebApplicationTest.Entities
 {
     public class Student
     {
@@ -20,6 +20,8 @@ namespace ConsoleAppTest.Entities
         
         public DateTime DateOfBirth { get; set; }
 
-        public ICollection<StudentClassroom>? StudentClassrooms { get; }
+        public List<Classroom> Classrooms { get; } = new();
+        public List<StudentClassroom> StudentClassrooms { get; } = new();
+        public List<Hobby> Hobbies { get; } = new();
     }
 }
