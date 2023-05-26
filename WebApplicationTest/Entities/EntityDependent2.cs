@@ -3,17 +3,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplicationTest.Entities
 {
-    [Table("Hobby")]
-    public class Hobby
+    [Table(nameof(EntityDependent2))]
+    public class EntityDependent2
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public int StudentId { get; set; }
-        public Student Student { get; set; } = null!;
 
-        [Required]
-        [MaxLength(512)]
+        [MaxLength(100)]
         public string Name { get; set; } = null!;
+
+        public int? EntityPrincipleId { get; set; }
+        public EntityPrinciple? EntityPrinciple { get; set; }
     }
 }

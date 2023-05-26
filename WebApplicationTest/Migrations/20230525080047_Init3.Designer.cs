@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplicationTest.DbContexts;
 
@@ -11,9 +12,11 @@ using WebApplicationTest.DbContexts;
 namespace WebApplicationTest.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230525080047_Init3")]
+    partial class Init3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,93 +41,6 @@ namespace WebApplicationTest.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Classrooms");
-                });
-
-            modelBuilder.Entity("WebApplicationTest.Entities.EntityDependent", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("EntityPrincipleId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EntityPrincipleId");
-
-                    b.ToTable("EntityDependent");
-                });
-
-            modelBuilder.Entity("WebApplicationTest.Entities.EntityDependent2", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("EntityPrincipleId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EntityPrincipleId");
-
-                    b.ToTable("EntityDependent2");
-                });
-
-            modelBuilder.Entity("WebApplicationTest.Entities.EntityDependentLevel2", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("EntityDependentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EntityDependentId");
-
-                    b.ToTable("EntityDependentLevel2");
-                });
-
-            modelBuilder.Entity("WebApplicationTest.Entities.EntityPrinciple", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EntityPrinciple");
                 });
 
             modelBuilder.Entity("WebApplicationTest.Entities.Hobby", b =>
@@ -194,36 +110,6 @@ namespace WebApplicationTest.Migrations
                     b.ToTable("StudentsClassrooms");
                 });
 
-            modelBuilder.Entity("WebApplicationTest.Entities.EntityDependent", b =>
-                {
-                    b.HasOne("WebApplicationTest.Entities.EntityPrinciple", "EntityPrinciple")
-                        .WithMany("EntityDependents")
-                        .HasForeignKey("EntityPrincipleId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("EntityPrinciple");
-                });
-
-            modelBuilder.Entity("WebApplicationTest.Entities.EntityDependent2", b =>
-                {
-                    b.HasOne("WebApplicationTest.Entities.EntityPrinciple", "EntityPrinciple")
-                        .WithMany("EntityDependent2s")
-                        .HasForeignKey("EntityPrincipleId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("EntityPrinciple");
-                });
-
-            modelBuilder.Entity("WebApplicationTest.Entities.EntityDependentLevel2", b =>
-                {
-                    b.HasOne("WebApplicationTest.Entities.EntityDependent", "EntityDependent")
-                        .WithMany()
-                        .HasForeignKey("EntityDependentId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("EntityDependent");
-                });
-
             modelBuilder.Entity("WebApplicationTest.Entities.Hobby", b =>
                 {
                     b.HasOne("WebApplicationTest.Entities.Student", "Student")
@@ -257,13 +143,6 @@ namespace WebApplicationTest.Migrations
             modelBuilder.Entity("WebApplicationTest.Entities.Classroom", b =>
                 {
                     b.Navigation("StudentClasses");
-                });
-
-            modelBuilder.Entity("WebApplicationTest.Entities.EntityPrinciple", b =>
-                {
-                    b.Navigation("EntityDependent2s");
-
-                    b.Navigation("EntityDependents");
                 });
 
             modelBuilder.Entity("WebApplicationTest.Entities.Student", b =>

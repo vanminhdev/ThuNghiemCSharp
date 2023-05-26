@@ -25,6 +25,8 @@ namespace WebApplicationTest.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
         {
+            _context.Students.Remove(_context.Students.FirstOrDefault(s => s.Id == 1)!);
+            _context.SaveChanges();
             if (_context.Students == null)
             {
                 return NotFound();

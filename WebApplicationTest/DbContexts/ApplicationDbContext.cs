@@ -23,6 +23,10 @@ namespace WebApplicationTest.DbContexts
         public virtual DbSet<Classroom> Classrooms { get; set; }
         public virtual DbSet<StudentClassroom> StudentsClassrooms { get; set; }
         public virtual DbSet<Hobby> Hobbies { get; set; }
+        public virtual DbSet<EntityPrinciple> EntityPrinciples { get; set; }
+        public virtual DbSet<EntityDependent> EntityDependents { get; set; }
+        public virtual DbSet<EntityDependent2> EntityDependent2s { get; set; }
+        public virtual DbSet<EntityDependentLevel2> EntityDependentLevel2s { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -58,7 +62,29 @@ namespace WebApplicationTest.DbContexts
                 .HasOne(e => e.Student)
                 .WithMany(e => e.Hobbies)
                 .HasForeignKey(e => e.StudentId)
-                .OnDelete(DeleteBehavior.SetNull); //dành cho trường hợp trường khoá ngoại có thể null
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<EntityDependent>()
+                .HasOne(e => e.EntityPrinciple)
+                .WithMany(e => e.EntityDependents)
+                .HasForeignKey(e => e.EntityPrincipleId)
+                .OnDelete(DeleteBehavior.Restrict);
+            //delete behavior Restrict, NoAction, SetNull hoạt động giống hệt nhau đều set null cho khoá ngoại khi xoá principle entity (trên docs microsoft cũng mô tả giống hệt nhau)
+            //khi cài là restrict thì trong db là no action (tuy nhiên khi xoá bằng entity framework thì nó vẫn hoạt động như set null)
+            //trường hợp DeleteBehavior là set null thì trong db là set null
+            //mặc định không nói gì trong ef tạo migrations sẽ là cascade, mặc định trong db thì lại là no action
+
+            modelBuilder.Entity<EntityDependent2>()
+                .HasOne(e => e.EntityPrinciple)
+                .WithMany(e => e.EntityDependent2s)
+                .HasForeignKey(e => e.EntityPrincipleId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<EntityDependentLevel2>()
+                .HasOne(e => e.EntityDependent)
+                .WithMany()
+                .HasForeignKey(e => e.EntityDependentId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

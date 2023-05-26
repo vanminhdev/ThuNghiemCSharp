@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplicationTest.DbContexts;
 
@@ -11,9 +12,11 @@ using WebApplicationTest.DbContexts;
 namespace WebApplicationTest.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230526045713_DemoDeleteBehavior2")]
+    partial class DemoDeleteBehavior2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,7 +51,7 @@ namespace WebApplicationTest.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("EntityPrincipleId")
+                    b.Property<int>("EntityPrincipleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -199,7 +202,8 @@ namespace WebApplicationTest.Migrations
                     b.HasOne("WebApplicationTest.Entities.EntityPrinciple", "EntityPrinciple")
                         .WithMany("EntityDependents")
                         .HasForeignKey("EntityPrincipleId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("EntityPrinciple");
                 });
@@ -209,7 +213,7 @@ namespace WebApplicationTest.Migrations
                     b.HasOne("WebApplicationTest.Entities.EntityPrinciple", "EntityPrinciple")
                         .WithMany("EntityDependent2s")
                         .HasForeignKey("EntityPrincipleId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("EntityPrinciple");
                 });
@@ -219,7 +223,7 @@ namespace WebApplicationTest.Migrations
                     b.HasOne("WebApplicationTest.Entities.EntityDependent", "EntityDependent")
                         .WithMany()
                         .HasForeignKey("EntityDependentId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("EntityDependent");
                 });

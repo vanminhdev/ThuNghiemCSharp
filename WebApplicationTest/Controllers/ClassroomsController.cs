@@ -120,14 +120,13 @@ namespace WebApplicationTest.Controllers
         public IActionResult GetAllStudent(int classroomId)
         {
             var result = _context.StudentsClassrooms
-                .Include(sc => sc.Student)
-                .ThenInclude(s => s.Hobbies)
+                .Include(sc => sc.Student).ThenInclude(s => s.Hobbies)
                 .Include(sc => sc.Classroom)
-                .Where(sc => sc.ClassroomId == classroomId) //&& sc.Student.Hobbies.Any(h => h.Name.Contains("Liên Minh"))
+                .Where(sc => sc.ClassroomId == classroomId)// && sc.Student.Hobbies.Any(h => h.Name.Contains("Liên Minh")))
                 .Select(sc => new
                 {
                     sc.Id,
-                    Hobbies = sc.Student.Hobbies.Where(h => h.Name.Contains("Liên Minh")).Select(h => h.Name),
+                    Hobbies = sc.Student.Hobbies.Select(h => h.Name),
                 });
 
             var test = _context.Hobbies
