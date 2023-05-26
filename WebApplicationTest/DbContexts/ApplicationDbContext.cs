@@ -74,6 +74,11 @@ namespace WebApplicationTest.DbContexts
             //trường hợp DeleteBehavior là set null thì trong db là set null
             //mặc định không nói gì trong ef tạo migrations sẽ là cascade, mặc định trong db thì lại là no action
 
+            //tóm lại chỉ cần phân thành 3 loại Restrict, NoAction coi là NoAction, loại SetNull và loại Cascade
+            //loại 1 thì báo lỗi khi xoá priciple entity
+            //loại 2 thì set null vào trường khoá ngoại khi xoá principle entity
+            //loại 3 thì xoá tất cả dependent entity khi xoá principle entity
+
             modelBuilder.Entity<EntityDependent2>()
                 .HasOne(e => e.EntityPrinciple)
                 .WithMany(e => e.EntityDependent2s)
