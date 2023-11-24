@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace ConsoleAppTest
 {
@@ -44,19 +45,13 @@ namespace ConsoleAppTest
 
         static void Main(string[] args)
         {
-            var test = new Classroom();
-            Console.WriteLine(test.Name?.ToString());
+            var regex = new Regex(@"{{Text_(\d+)_(\d+)}}");
+            string inputString1 = "abc def {{Text_123_456}}";
+            var result1 = regex.Matches(inputString1);
+            var result = result1.Count;
 
-            IHost host = CreateHostBuilder(args).Build();
-            var dbContext = host.Services.GetService<ApplicationDbContext>()!;
-
-            var studentClassrooms = dbContext.StudentsClassrooms.ToList();
-            var students = dbContext.Students.ToList();
-
-            List<int> list = new() { 1, 2, 3 };
-            List<int> list2 = new() { 2, 3 };
-
-            list.Except(list2, new Compare());
+            string inputString2 = "abc def ";
+            var result2 = regex.Matches(inputString2);
         }
 
     }

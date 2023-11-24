@@ -1,4 +1,4 @@
-
+﻿
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
@@ -70,7 +70,14 @@ namespace WebApplicationTest
             });
 
             string? connectionString = builder.Configuration.GetConnectionString("Default");
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
+            {
+                //options.UseInMemoryDatabase("DefaultDb");
+                options.UseSqlServer(connectionString);
+            });
+
+            //AddDbContextFactory phải đi với singleton hoặc context pool 
+            builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
             {
                 //options.UseInMemoryDatabase("DefaultDb");
                 options.UseSqlServer(connectionString);
