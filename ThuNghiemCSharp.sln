@@ -13,7 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplicationTest2", "WebA
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{A0F4E9D0-4CC4-4CA7-9D76-218EFFCD2325}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Performance", "Performance\Performance.csproj", "{B03064CB-F5CB-48A4-89E6-48A9425B4E5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Performance", "Performance\Performance.csproj", "{B03064CB-F5CB-48A4-89E6-48A9425B4E5E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TotpDemo", "TotpDemo\TotpDemo.csproj", "{8847EED1-FCC9-4B0F-84B7-CA5C77891F08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandleExceptions", "HandleExceptions\HandleExceptions.csproj", "{EB38562D-5D73-46ED-ABB6-BCAAC26D9BF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{B03064CB-F5CB-48A4-89E6-48A9425B4E5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B03064CB-F5CB-48A4-89E6-48A9425B4E5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B03064CB-F5CB-48A4-89E6-48A9425B4E5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8847EED1-FCC9-4B0F-84B7-CA5C77891F08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8847EED1-FCC9-4B0F-84B7-CA5C77891F08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8847EED1-FCC9-4B0F-84B7-CA5C77891F08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8847EED1-FCC9-4B0F-84B7-CA5C77891F08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB38562D-5D73-46ED-ABB6-BCAAC26D9BF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB38562D-5D73-46ED-ABB6-BCAAC26D9BF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB38562D-5D73-46ED-ABB6-BCAAC26D9BF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB38562D-5D73-46ED-ABB6-BCAAC26D9BF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,21 +6,40 @@ namespace TaskAndThread
     {
         static async Task Main()
         {
-            //await Time(async () =>
-            //{
-            //    Console.WriteLine("Enter");
-            //    await Task.Delay(TimeSpan.FromSeconds(16));
-            //    Console.WriteLine("Exit");
-            //});
+            CancellationTokenSource source = new CancellationTokenSource();
+            CancellationTokenSource source2 = new CancellationTokenSource();
+            Console.WriteLine($"Main - {Environment.CurrentManagedThreadId}: start job");
+            
+            var task1 = SlowTaskWithCancelToken("Task1", 1000, source.Token);
+            var task2 = SlowTaskWithCancelToken("Task2", 5000, source2.Token);
+            var task3 = SlowTask("Task3", 2000);
+            var task4 = SlowTask("Task4", 5000);
 
-            var test = GetDate();
+            await Task.WhenAll(task1, task2, task3, task4);
+            Console.WriteLine($"Main - {Environment.CurrentManagedThreadId}: done job");
         }
 
-        public static DateTime GetDate()
+        #region demo handle exception in multiple task
+        public static async Task SlowTaskWithCancelToken(string taskName, int delay, CancellationToken cancellationToken)
         {
-            return DateTime.UtcNow.AddHours(7);
+            Console.WriteLine($"{taskName} - {Environment.CurrentManagedThreadId}: start");
+            await Task.Delay(delay, cancellationToken);
+            if (taskName == "Task1")
+            {
+                await Task.Delay(delay, cancellationToken);
+            }
+            Console.WriteLine($"{taskName} - {Environment.CurrentManagedThreadId}: done");
         }
 
+        public static async Task SlowTask(string taskName, int delay)
+        {
+            Console.WriteLine($"{taskName} - {Environment.CurrentManagedThreadId}: start");
+            await Task.Delay(delay);
+            Console.WriteLine($"{taskName} - {Environment.CurrentManagedThreadId}: done");
+        }
+        #endregion
+
+        #region demo multiple task
         public static async Task MyMethod()
         {
             List<Task> tasks = new List<Task>();
@@ -64,6 +83,8 @@ namespace TaskAndThread
             await action();
             Console.WriteLine($"...done timing: {sw.Elapsed}");
         }
+        #endregion
+
 
         public static IEnumerable<int> GenerateNumbers()
         {
