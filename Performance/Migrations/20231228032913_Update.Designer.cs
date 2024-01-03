@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Performance.DbContexts;
 
@@ -10,9 +11,11 @@ using Performance.DbContexts;
 namespace Performance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231228032913_Update")]
+    partial class Update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,10 +45,7 @@ namespace Performance.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MaxStudent", "Status")
-                        .HasDatabaseName("IX_Classroom");
-
-                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("MaxStudent", "Status"), new[] { "Name" });
+                    b.HasIndex(new[] { "Status", "Name" }, "IX_Classroom");
 
                     b.ToTable("Classroom");
                 });
@@ -68,8 +68,7 @@ namespace Performance.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
-                        .HasDatabaseName("IX_Student");
+                    b.HasIndex(new[] { "Deleted", "Name" }, "IX_Student");
 
                     b.ToTable("Student");
                 });
@@ -92,9 +91,9 @@ namespace Performance.Migrations
 
                     b.HasIndex("ClassroomId");
 
-                    b.HasIndex(new[] { "StudentId", "ClassroomId" }, "IX_StudentClassroom");
+                    b.HasIndex("StudentId");
 
-                    b.ToTable("StudentClassroom");
+                    b.ToTable("StudentClassrooms");
                 });
 
             modelBuilder.Entity("Performance.Entities.StudentClassroom", b =>

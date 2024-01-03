@@ -17,7 +17,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Performance", "Performance\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TotpDemo", "TotpDemo\TotpDemo.csproj", "{8847EED1-FCC9-4B0F-84B7-CA5C77891F08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandleExceptions", "HandleExceptions\HandleExceptions.csproj", "{EB38562D-5D73-46ED-ABB6-BCAAC26D9BF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HandleExceptions", "HandleExceptions\HandleExceptions.csproj", "{EB38562D-5D73-46ED-ABB6-BCAAC26D9BF6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FF070997-1757-41D5-B912-E5EA9243A572}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

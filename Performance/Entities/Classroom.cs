@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Performance.Entities
 {
-    [Table(nameof(Author))]
-    [Index(nameof(Deleted), nameof(Name), IsUnique = false, Name = $"IX_{nameof(Author)}")]
-    public class Author
+    [Table(nameof(Classroom))]
+    //[Index(nameof(MaxStudent), /*nameof(Name),*/ IsUnique = false, Name = $"IX_{nameof(Classroom)}")]
+    public class Classroom
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -15,8 +15,10 @@ namespace Performance.Entities
         [MaxLength(128)]
         public required string Name { get; set; }
 
-        public bool Deleted { get; set; }
+        public int MaxStudent { get; set; }
 
-        public List<Book> Books { get; } = new();
+        public int Status { get; set; }
+
+        public List<Student> Students { get; } = new();
     }
 }

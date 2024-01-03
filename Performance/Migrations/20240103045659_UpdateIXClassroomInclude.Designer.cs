@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Performance.DbContexts;
 
@@ -10,9 +11,11 @@ using Performance.DbContexts;
 namespace Performance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240103045659_UpdateIXClassroomInclude")]
+    partial class UpdateIXClassroomInclude
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,10 +45,13 @@ namespace Performance.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MaxStudent", "Status")
+                    b.HasIndex("MaxStudent")
                         .HasDatabaseName("IX_Classroom");
 
-                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("MaxStudent", "Status"), new[] { "Name" });
+                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("MaxStudent"), new[] { "Name", "Status" });
+
+                    b.HasIndex("Status")
+                        .HasDatabaseName("IX_Classroom_Status");
 
                     b.ToTable("Classroom");
                 });

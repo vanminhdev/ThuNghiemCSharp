@@ -45,14 +45,39 @@ namespace ConsoleAppTest
 
         static void Main(string[] args)
         {
-            var regex = new Regex(@"{{Text_(\d+)_(\d+)}}");
-            string inputString1 = "abc def {{Text_123_456}}";
-            var result1 = regex.Matches(inputString1);
-            var result = result1.Count;
+            //var regex = new Regex(@"{{Text_(\d+)_(\d+)}}");
+            //string inputString1 = "abc def {{Text_123_456}}";
+            //var result1 = regex.Matches(inputString1);
+            //var result = result1.Count;
 
-            string inputString2 = "abc def ";
-            var result2 = regex.Matches(inputString2);
+            //string inputString2 = "abc def ";
+            //var result2 = regex.Matches(inputString2);
+
+
+
         }
 
+        interface IDto
+        {
+            public int Pro1 { get; set; }
+        }
+
+        interface IWork
+        {
+            public void Run<T>(T input) where T : IDto;
+        }
+
+
+        class Dto1 : IDto
+        {
+            public int Pro1 { get; set; }
+        }
+
+        class Service1 : IWork
+        {
+            public void Run<T>(T input) where T : IDto
+            {
+            }
+        }
     }
 }

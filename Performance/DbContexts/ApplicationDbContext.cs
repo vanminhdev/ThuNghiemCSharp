@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Performance.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Performance.DbContexts
 {
@@ -18,18 +13,33 @@ namespace Performance.DbContexts
         {
         }
 
-        public virtual DbSet<Book> Books { get; set; }
-        public virtual DbSet<Author> Authors { get; set; }
+        public virtual DbSet<Classroom> Classrooms { get; set; }
+        public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<StudentClassroom> StudentClassrooms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Book>(entity =>
-            {
-                entity.HasOne(e => e.Author)
-                    .WithMany(e => e.Books)
-                    .HasForeignKey(e => e.AuthorId)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
+            modelBuilder.Entity<Student>()
+                .HasMany(student => student.Classrooms)
+                .WithMany(classroom => classroom.Students)
+                .UsingEntity<StudentClassroom>(
+                    studentClassroom => studentClassroom
+                        .HasOne(sc => sc.Classroom)
+                        .WithMany()
+                        .HasForeignKey(sc => sc.ClassroomId),
+                    studentClassroom => studentClassroom
+                        .HasOne(sc => sc.Student)
+                        .WithMany()
+                        .HasForeignKey(sc => sc.StudentId));
+
+            modelBuilder.Entity<Student>()
+                .HasIndex(c => new { c.Name })
+                .HasDatabaseName($"IX_{nameof(Student)}");
+
+            modelBuilder.Entity<Classroom>()
+                .HasIndex(c => new { c.MaxStudent, c.Status })
+                .IncludeProperties(c => new { c.Name })
+                .HasDatabaseName($"IX_{nameof(Classroom)}");
         }
     }
 }
