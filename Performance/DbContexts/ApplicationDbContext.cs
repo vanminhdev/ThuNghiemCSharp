@@ -9,8 +9,16 @@ namespace Performance.DbContexts
         {
         }
 
-        protected ApplicationDbContext()
+        public ApplicationDbContext()
         {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("Data Source=.\\;Initial Catalog=Performance;Integrated Security=True;Pooling=False;TrustServerCertificate=True;");
+            }
         }
 
         public virtual DbSet<Classroom> Classrooms { get; set; }
@@ -33,13 +41,22 @@ namespace Performance.DbContexts
                         .HasForeignKey(sc => sc.StudentId));
 
             modelBuilder.Entity<Student>()
-                .HasIndex(c => new { c.Name })
+                .HasIndex(s => new { s.Phone, s.StudentCode, s.Email, s.DateOfBirth, s.Name, s.IndustryCode, s.MajorCode, s.Deleted })
+                .IsDescending(false, false, false, true, false, false, false, false)
                 .HasDatabaseName($"IX_{nameof(Student)}");
 
             modelBuilder.Entity<Classroom>()
                 .HasIndex(c => new { c.MaxStudent, c.Status })
                 .IncludeProperties(c => new { c.Name })
                 .HasDatabaseName($"IX_{nameof(Classroom)}");
+
+            //modelBuilder.Entity<Classroom>()
+            //    .HasIndex(c => new { c.MaxStudent })
+            //    .HasDatabaseName($"IX_{nameof(Classroom)}1");
+
+            //modelBuilder.Entity<Classroom>()
+            //    .HasIndex(c => new { c.Status })
+            //    .HasDatabaseName($"IX_{nameof(Classroom)}2");
         }
     }
 }

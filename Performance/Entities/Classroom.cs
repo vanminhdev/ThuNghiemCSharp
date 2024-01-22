@@ -1,12 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Performance.Entities
 {
     [Table(nameof(Classroom))]
     //[Index(nameof(MaxStudent), /*nameof(Name),*/ IsUnique = false, Name = $"IX_{nameof(Classroom)}")]
-    public class Classroom
+    public class Classroom : IEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

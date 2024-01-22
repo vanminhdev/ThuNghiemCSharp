@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Performance.DbContexts;
 
@@ -11,9 +12,11 @@ using Performance.DbContexts;
 namespace Performance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240117165557_UpdateIndexStudent2")]
+    partial class UpdateIndexStudent2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,7 +103,7 @@ namespace Performance.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Phone", "StudentCode", "Email", "DateOfBirth", "Name", "IndustryCode", "MajorCode", "Deleted")
+                    b.HasIndex("StudentCode", "Phone", "Email", "DateOfBirth", "Name", "IndustryCode", "MajorCode", "Deleted")
                         .IsDescending(false, false, false, true, false, false, false, false)
                         .HasDatabaseName("IX_Student");
 

@@ -5,18 +5,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Performance.Benchmarks;
+using Performance.Common;
 using Performance.DbContexts;
 using Performance.Entities;
+using System.Diagnostics;
+using System.Net.NetworkInformation;
 using System.Reflection;
+using System.Text;
 
 namespace Performance
 {
-    [MemoryDiagnoser]
-    public class Program
+    public static class Program
     {
-        protected Program()
-        {
-        }
 
         static async Task SeedData(ApplicationDbContext dbContext)
         {
@@ -70,25 +71,278 @@ namespace Performance
             //}
         }
 
-        static async Task UpdateData(ApplicationDbContext dbContext)
+        static string GenerateRandomPhoneNumber()
         {
             Random random = new Random();
-            foreach(var classroom in dbContext.Classrooms.ToList())
+            // Lấy ngẫu nhiên 10 chữ số để tạo số điện thoại
+            StringBuilder phoneNumberBuilder = new StringBuilder("0");
+            for (int i = 0; i < 9; i++)
             {
-                classroom.MaxStudent = random.Next(20, 60);
+                phoneNumberBuilder.Append(random.Next(10));
             }
+            return phoneNumberBuilder.ToString();
+        }
+
+        static string GenerateRandomEmail()
+        {
+            Random random = new Random();
+            StringBuilder emailBuilder = new StringBuilder();
+            emailBuilder.Append("user");
+            emailBuilder.Append(random.Next(1, 99999999));
+            emailBuilder.Append("@edu.vn");
+            return emailBuilder.ToString();
+        }
+
+        // Danh sách 10 mã ngành
+        static readonly List<string?> IndustryCodes = new()
+        {
+            "111",
+            null,
+            "222",
+            "333",
+            null,
+            "444",
+            "555",
+            null,
+            "666",
+            "777",
+            null,
+            "888",
+            "999",
+            null
+        };
+
+        // Danh sách mã chuyên ngành dài 7 ký tự
+        static readonly List<string> MajorCodes = new List<string>
+        {
+            "1234567",
+            null,
+            "2345678",
+            "3456789",
+            null,
+            "4567890",
+            "5678901",
+            null,
+            "6789012",
+            "7890123",
+            null,
+            "8901234",
+            "9012345",
+            null,
+        };
+
+        static string GetRandomIndustryCode()
+        {
+            // Sử dụng thời gian hiện tại làm giá trị seed
+            Random random = new Random(DateTime.Now.Millisecond);
+            // Lấy ngẫu nhiên một mã ngành từ danh sách
+            int randomIndex = random.Next(IndustryCodes.Count);
+            return IndustryCodes[randomIndex];
+        }
+
+        static string GetRandomMajorCode()
+        {
+            // Sử dụng thời gian hiện tại làm giá trị seed
+            Random random = new Random(DateTime.Now.Millisecond);
+
+            // Lấy ngẫu nhiên một mã chuyên ngành từ danh sách
+            int randomIndex = random.Next(MajorCodes.Count);
+            return MajorCodes[randomIndex];
+        }
+
+        static DateTime GenerateRandomBirthDate()
+        {
+            Random random = new Random(DateTime.Now.Millisecond);
+            DateTime maxDate = DateTime.Now.AddYears(-18);
+            DateTime minDate = DateTime.Now.AddYears(-30);
+            int range = (int)(maxDate - minDate).TotalDays;
+            int randomDays = random.Next(range);
+            DateTime randomBirthDate = minDate.AddDays(randomDays);
+            return randomBirthDate;
+        }
+
+        static async Task UpdateData(ApplicationDbContext dbContext)
+        {
+            //Random random = new Random();
+            //foreach(var classroom in dbContext.Classrooms.ToList())
+            //{
+            //    classroom.MaxStudent = random.Next(20, 60);
+            //}
+            Random random1 = new Random(Guid.NewGuid().GetHashCode());
+            Random random2 = new Random(Guid.NewGuid().GetHashCode());
+            foreach (var student in dbContext.Students.ToList())
+            {
+                student.StudentCode = random1.Next(300, 999999).ToString() + random2.Next(50, 68).ToString();
+                student.Phone = GenerateRandomPhoneNumber();
+                student.Email = GenerateRandomEmail();
+                student.IndustryCode = GetRandomIndustryCode();
+                student.MajorCode = GetRandomMajorCode();
+                student.CreatedDate = DateTime.Now.AddDays(-100).AddSeconds(student.Id);
+                student.DateOfBirth = GenerateRandomBirthDate();
+                Console.WriteLine(student);
+            }
+
             await dbContext.SaveChangesAsync();
+        }
+
+        class Filter1
+        {
+            public int Status { get; set; }
+        }
+
+        static void QueryParam(ApplicationDbContext dbContext)
+        {
+            dbContext.Classrooms.Where(c => c.Status == ClassroomStatus.Active).ToList();
+
+            int status = ClassroomStatus.Active;
+            dbContext.Classrooms.Where(c => c.Status == status).ToList();
+
+            var filter = new Filter1()
+            {
+                Status = ClassroomStatus.Active
+            };
+            dbContext.Classrooms.Where(c => c.Status == filter.Status).ToList();
+
+            //var status2 = 
+            dbContext.Classrooms.Where(c => new int[] { ClassroomStatus.Active, ClassroomStatus.Deactive }.Contains(c.Status)).ToList();
+        }
+
+        static void QueryParam2(ApplicationDbContext dbContext)
+        {
+            var timer = new Stopwatch();
+            timer.Start();
+            for (int i = 0; i < 300; i++)
+            {
+                var test1 = dbContext.Classrooms.FirstOrDefault(c => c.MaxStudent == 20 && c.Status == 1);
+            }
+            //B: Run stuff you want timed
+            timer.Stop();
+
+            var timer2 = new Stopwatch();
+            timer2.Start();
+            for (int i = 0; i < 300; i++)
+            {
+                int maxStudent = 20;
+                int status = 1;
+                var test2 = dbContext.Classrooms.FirstOrDefault(c => c.MaxStudent == maxStudent && c.Status == status);
+            }
+            timer2.Stop();
+
+            var timer3 = new Stopwatch();
+            timer3.Start();
+            var test3 = dbContext.Classrooms.Where(c => c.MaxStudent == 20 && c.Status == 1).ToList();
+            timer2.Stop();
+
+            Console.WriteLine($"{nameof(QueryParam2)}: {timer.Elapsed}");
+            Console.WriteLine($"{nameof(QueryParam2)}: {timer2.Elapsed}");
+            Console.WriteLine($"{nameof(QueryParam2)}: {timer3.Elapsed}");
+        }
+
+        static IQueryable<StudentClassroom> QueryReuse(this ApplicationDbContext dbContext)
+        {
+            //Chỗ này có thể xử lý join bla bla
+            return dbContext.StudentClassrooms;
+        }
+
+        static void QueryParam3(ApplicationDbContext dbContext)
+        {
+            var test = from student in dbContext.Students
+                       join sc in dbContext.QueryReuse() on student.Id equals sc.StudentId
+                       select sc;
+
+            var test2 = test.ToList();
+        }
+
+
+        static void QueryParam4(ApplicationDbContext dbContext)
+        {
+            var timer = new Stopwatch();
+            timer.Start();
+            for (int i = 0; i < 100; i++)
+            {
+                dbContext.Classrooms.FirstOrDefault(c => c.Status == 1);
+            }
+            timer.Stop();
+            Console.WriteLine($"{nameof(QueryParam4)}: {timer.Elapsed}");
+        }
+
+        static void QueryParam5(ApplicationDbContext dbContext)
+        {
+            var timer = new Stopwatch();
+            timer.Start();
+            for (int i = 0; i < 100; i++)
+            {
+                dbContext.Classrooms.AsNoTracking().FirstOrDefault(c => c.Status == 1);
+            }
+            timer.Stop();
+
+            //var timer2 = new Stopwatch();
+            //timer2.Start();
+            //for (int i = 0; i < 100; i++)
+            //{
+            //    dbContext.Classrooms.AsNoTrackingWithIdentityResolution().FirstOrDefault(c => c.Status == 1);
+            //}
+            //timer2.Stop();
+
+            Console.WriteLine($"{nameof(QueryParam5)}: {timer.Elapsed}");
+            //Console.WriteLine($"{nameof(QueryParam5)}: {timer2.Elapsed}");
+        }
+
+        static async Task QueryParam6(ApplicationDbContext dbContext)
+        {
+            var timer = new Stopwatch();
+            timer.Start();
+            for (int i = 0; i < 100; i++)
+            {
+                await dbContext.Classrooms.FirstOrDefaultAsync(c => c.Status == 1);
+            }
+            timer.Stop();
+
+            Console.WriteLine($"{nameof(QueryParam6)}: {timer.Elapsed}");
+        }
+
+        static void QueryParam7(ApplicationDbContext dbContext)
+        {
+            var timer = new Stopwatch();
+            timer.Start();
+            for (int i = 0; i < 100; i++)
+            {
+                dbContext.Classrooms.FirstOrDefault(c => c.Status == 1);
+            }
+            timer.Stop();
+
+            Console.WriteLine($"{nameof(QueryParam7)}: {timer.Elapsed}");
+        }
+
+        static void QuerySame(ApplicationDbContext dbContext, IQueryable<IEntity> query)
+        {
+            var test = from entity in query
+                       join other in dbContext.StudentClassrooms on entity.Id equals other.StudentId
+                       select entity;
+            var test2 = test.FirstOrDefault();
         }
 
         static async Task Main(string[] args)
         {
+            //BenchmarkRunner.Run<Program>();
             var host = CreateHostBuilder(args).Build();
             var dbContext = host.Services.GetRequiredService<ApplicationDbContext>();
             //await SeedData(dbContext);
-            await UpdateData(dbContext);
-            //host.Run();
+            //await UpdateData(dbContext);
+            //host.Run(); 
 
-            BenchmarkRunner.Run<Program>();
+            //BenchmarkRunner.Run<TestQuery>();
+
+            //QueryParam2(dbContext);
+
+            //QueryParam3(dbContext);
+            //QueryParam4(dbContext);
+            //QueryParam5(dbContext);
+            //await QueryParam6(dbContext);
+            //QueryParam7(dbContext);
+
+            QuerySame(dbContext, dbContext.Students);
+            QuerySame(dbContext, dbContext.Classrooms);
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
