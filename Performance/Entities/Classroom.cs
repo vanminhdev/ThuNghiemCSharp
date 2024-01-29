@@ -18,6 +18,8 @@ namespace Performance.Entities
 
         public int Status { get; set; }
 
+        public bool Deleted { get; set; }
+
         public List<Student> Students { get; } = new();
     }
 }

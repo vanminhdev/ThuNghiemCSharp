@@ -15,13 +15,10 @@ namespace TotpDemo
             string qrCodeImageUrl = setupInfo.QrCodeSetupImageUrl;
             string manualEntrySetupCode = setupInfo.ManualEntryKey;
 
-            //imgQrCode.ImageUrl = qrCodeImageUrl;
-            //lblManualSetupCode.Text = manualEntrySetupCode;
-
             // verify
             TwoFactorAuthenticator tfa2 = new TwoFactorAuthenticator();
             Console.Write("Nhap otp: ");
-            bool result = tfa.ValidateTwoFactorPIN(key, Console.ReadLine());
+            bool result = tfa2.ValidateTwoFactorPIN(key, Console.ReadLine());
             Console.Write(result);
         }
     }
