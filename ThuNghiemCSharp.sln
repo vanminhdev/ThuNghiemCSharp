@@ -19,6 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TotpDemo", "TotpDemo\TotpDe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HandleExceptions", "HandleExceptions\HandleExceptions.csproj", "{EB38562D-5D73-46ED-ABB6-BCAAC26D9BF6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FF070997-1757-41D5-B912-E5EA9243A572}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoUnitTest", "DemoUnitTest\DemoUnitTest.csproj", "{71A2B8AF-6F58-400D-84E0-2E29EDBDD7A3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoUnitTest.Tests", "DemoUnitTest.Tests\DemoUnitTest.Tests.csproj", "{6AD49DF1-71B5-4FA1-A472-E278CFE80E8C}"

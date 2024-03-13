@@ -136,5 +136,11 @@ namespace ConsoleAppTest
             //var test2 = JsonSerializer.Deserialize<Data>(test, jsonSerializerOptions);
         }
 
+        class Service1 : IWork
+        {
+            public void Run<T>(T input) where T : IDto
+            {
+            }
+        }
     }
 }
