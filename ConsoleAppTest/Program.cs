@@ -6,6 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace ConsoleAppTest
@@ -43,15 +46,94 @@ namespace ConsoleAppTest
             }
         }
 
+        public class ByteArrayConverter : JsonConverter<byte[]>
+        {
+            public override byte[]? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+            {
+                if (reader.TokenType == JsonTokenType.Null)
+                    return null;
+
+                return reader.GetBytesFromBase64();
+            }
+
+            public override void Write(Utf8JsonWriter writer, byte[] value, JsonSerializerOptions options)
+            {
+                writer.WriteStartArray();
+
+                foreach (var val in value)
+                {
+                    writer.WriteNumberValue(val);
+                }
+
+                writer.WriteEndArray();
+            }
+        }
+
+        public class Data
+        {
+            public byte[] Bytes { get; set; }
+        }
+
+        public class ExceptionCustom : Exception
+        {
+            public ExceptionCustom(string? message) : base(message)
+            {
+            }
+        }
+
+        public class ExceptionCustom2 : Exception
+        {
+            public ExceptionCustom2(string? message) : base(message)
+            {
+            }
+        }
+
+        public static void OkException(ExceptionCustom ex)
+        {
+
+        }
+
+        public static void OkException(ExceptionCustom2 ex)
+        {
+
+        }
+
+        public static void OkException(Exception ex)
+        {
+
+        }
+
         static void Main(string[] args)
         {
-            var regex = new Regex(@"{{Text_(\d+)_(\d+)}}");
-            string inputString1 = "abc def {{Text_123_456}}";
-            var result1 = regex.Matches(inputString1);
-            var result = result1.Count;
+            try
+            {
+                throw new ExceptionCustom2("abc");
+            }
+            catch (Exception ex)
+            {
+                OkException(ex);
+            }
 
-            string inputString2 = "abc def ";
-            var result2 = regex.Matches(inputString2);
+            //var regex = new Regex(@"{{Text_(\d+)_(\d+)}}");
+            //string inputString1 = "abc def {{Text_123_456}}";
+            //var result1 = regex.Matches(inputString1);
+            //var result = result1.Count;
+
+            //string inputString2 = "abc def ";
+            //var result2 = regex.Matches(inputString2);
+
+            //var jsonSerializerOptions = new JsonSerializerOptions
+            //{
+            //    Converters = { new ByteArrayConverter() },
+            //    PropertyNameCaseInsensitive = true, // (Tùy chọn) Tự động chữ hoa/thường của tên thuộc tính
+            //    //WriteIndented = true // (Tùy chọn) Định dạng đẹp khi xuất JSON
+            //};
+            //var test = JsonSerializer.Serialize(new Data
+            //{
+            //    Bytes = File.ReadAllBytes(@"D:\Docs\Hợp đồng.pdf"),
+            //}, jsonSerializerOptions);
+
+            //var test2 = JsonSerializer.Deserialize<Data>(test, jsonSerializerOptions);
         }
 
     }
