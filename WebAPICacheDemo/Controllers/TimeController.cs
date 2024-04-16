@@ -53,6 +53,17 @@ namespace WebAPICacheDemo.Controllers
             return Ok(DateTime.Now);
         }
 
+        /// <summary>
+        /// Cache custom
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("get-time-custom")]
+        //[ResponseCache(Duration = 30, Location = ResponseCacheLocation.None)]
+        public IActionResult GetTime5()
+        {
+            return Ok(DateTime.Now);
+        }
+
         [HttpGet("get-time-by-filter")]
         [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Client)]
         public IActionResult GetTimeByFilter(string keyword)
