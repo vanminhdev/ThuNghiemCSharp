@@ -103,6 +103,18 @@ namespace ConsoleAppTest
 
         }
 
+        public class A1
+        {
+            public string Str { get; set; }
+        }
+
+        public record R1(int A, int B, A1 Obj);
+
+        public static void Method1(R1 r)
+        {
+            r.Obj.Str = "2";
+        }
+
         static void Main(string[] args)
         {
             try
@@ -134,13 +146,15 @@ namespace ConsoleAppTest
             //}, jsonSerializerOptions);
 
             //var test2 = JsonSerializer.Deserialize<Data>(test, jsonSerializerOptions);
-        }
 
-        class Service1 : IWork
-        {
-            public void Run<T>(T input) where T : IDto
+            var r1 = new R1(1, 1, new A1
             {
-            }
+                Str = "1"
+            });
+
+            Method1(r1);
+
+
         }
     }
 }
