@@ -20,7 +20,7 @@ namespace DemoMinIO
             var s3Client = new AmazonS3Client(accessKey, secretKey, new AmazonS3Config
             {
                 ServiceURL = serviceURL,
-                ForcePathStyle = true // Yêu cầu để làm việc với MinIO
+                ForcePathStyle = true, // Yêu cầu để làm việc với MinIO
             });
 
             var filePath = @"C:\Users\minhlv\Pictures\Screenshot 2024-02-26 173515.png";
@@ -45,7 +45,9 @@ namespace DemoMinIO
             {
                 BucketName = bucketName,
                 Key = s3Key,
-                InputStream = fileStream
+                InputStream = fileStream,
+                AutoCloseStream = true,
+
             };
 
             var response = await client.PutObjectAsync(putRequest);
