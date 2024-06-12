@@ -6,6 +6,9 @@
         {
             try
             {
+                Console.WriteLine($"Nội dung vừa nhập: {Console.ReadLine()}");
+
+
                 // Các câu lệnh trong khối try
                 // Thực hiện theo thứ tự từ trên xuống dưới
                 Console.WriteLine("Bắt đầu thực hiện khối try");
