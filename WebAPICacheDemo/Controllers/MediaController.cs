@@ -8,7 +8,7 @@ namespace WebAPICacheDemo.Controllers
     public class MediaController : ControllerBase
     {
         [HttpGet("video")]
-        [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Client)]
+        [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Any)]
         public IActionResult GetVideo()
         {
             var path = Path.Combine(Directory.GetCurrentDirectory(), "Files", "video-demo.mp4");
