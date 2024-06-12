@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
@@ -115,16 +116,38 @@ namespace ConsoleAppTest
             r.Obj.Str = "2";
         }
 
+        /// <summary>
+        /// Xoá dấu
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        static string RemoveDiacritics(string text)
+        {
+            var normalizedString = text.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new StringBuilder();
+
+            foreach (var c in normalizedString)
+            {
+                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        }
+
         static void Main(string[] args)
         {
-            try
-            {
-                throw new ExceptionCustom2("abc");
-            }
-            catch (Exception ex)
-            {
-                OkException(ex);
-            }
+            //try
+            //{
+            //    throw new ExceptionCustom2("abc");
+            //}
+            //catch (Exception ex)
+            //{
+            //    OkException(ex);
+            //}
 
             //var regex = new Regex(@"{{Text_(\d+)_(\d+)}}");
             //string inputString1 = "abc def {{Text_123_456}}";
@@ -147,13 +170,17 @@ namespace ConsoleAppTest
 
             //var test2 = JsonSerializer.Deserialize<Data>(test, jsonSerializerOptions);
 
-            var r1 = new R1(1, 1, new A1
-            {
-                Str = "1"
-            });
+            //var r1 = new R1(1, 1, new A1
+            //{
+            //    Str = "1"
+            //});
 
-            Method1(r1);
+            //Method1(r1);
 
+
+            string input = "Für die Feier heute Abend brauchen wir noch Bier, Limonade und Wasser; Salzgebäck, Kekse und Chips; Papierteller und Plastikbesteck.";
+            string output = RemoveDiacritics(input);
+            Console.WriteLine(output);
 
         }
     }
