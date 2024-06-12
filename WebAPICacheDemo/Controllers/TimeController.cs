@@ -77,8 +77,8 @@ namespace WebAPICacheDemo.Controllers
         {
             var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "Files", "10MB.jpg");
             FileStream fileStream = new FileStream(imagePath, FileMode.Open, FileAccess.Read);
-            //var result = ResizeImage(fileStream);
-            return File(fileStream, "image/jpeg");
+            var result = ResizeImage(fileStream);
+            return File(result, "image/jpeg");
         }
 
         private const int MAX_WIDTH = 1080;

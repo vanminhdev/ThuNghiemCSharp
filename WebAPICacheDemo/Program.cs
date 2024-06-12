@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.ResponseCompression;
+using WebAPICacheDemo.Hosted;
 
 namespace WebAPICacheDemo
 {
@@ -16,6 +17,8 @@ namespace WebAPICacheDemo
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddHostedService<AutoFetchTokenHostedService>();
+
             builder.Services.AddResponseCaching(options =>
             {
                 options.MaximumBodySize = 1024;
@@ -23,16 +26,16 @@ namespace WebAPICacheDemo
                 options.SizeLimit = 1024 * 1024 * 1024; //1GB
             });
 
-            builder.Services.AddResponseCompression(options =>
-            {
-                options.EnableForHttps = true;
-                options.Providers.Add<BrotliCompressionProvider>();
-                options.Providers.Add<GzipCompressionProvider>();
+            //builder.Services.AddResponseCompression(options =>
+            //{
+            //    options.EnableForHttps = true;
+            //    options.Providers.Add<BrotliCompressionProvider>();
+            //    options.Providers.Add<GzipCompressionProvider>();
 
-                options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
-                    new[] { "video/mp4" }
-                );
-            });
+            //    options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+            //        new[] { "video/mp4" }
+            //    );
+            //});
 
             var app = builder.Build();
 
