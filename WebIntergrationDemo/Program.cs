@@ -27,21 +27,21 @@ namespace WebIntergrationDemo
 
             var app = builder.Build();
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var rabbitMQConfig = scope.ServiceProvider.GetRequiredService<IOptions<RabbitMqConfig>>().Value;
-                var connection = rabbitMQConfig.CreateConnection(true);
-                var model = connection.CreateModel();
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    var rabbitMQConfig = scope.ServiceProvider.GetRequiredService<IOptions<RabbitMqConfig>>().Value;
+            //    var connection = rabbitMQConfig.CreateConnection(true);
+            //    var model = connection.CreateModel();
 
-                var queueArgs = new Dictionary<string, object>
-                {
-                    { "x-queue-type", "quorum" }
-                };
-                model.QueueDeclare(QueueNames.EDIT + 1, durable: true, exclusive: false, autoDelete: false, arguments: queueArgs);
-                model.ExchangeDeclare(ExchangeNames.EDIT, ExchangeType.Direct, durable: true, autoDelete: false);
-                model.QueueBind(QueueNames.EDIT + 1, ExchangeNames.EDIT, "");
-                model.BasicQos(prefetchSize: 0, prefetchCount: 20, global: true);
-            }
+            //    var queueArgs = new Dictionary<string, object>
+            //    {
+            //        { "x-queue-type", "quorum" }
+            //    };
+            //    model.QueueDeclare(QueueNames.EDIT + 1, durable: true, exclusive: false, autoDelete: false, arguments: queueArgs);
+            //    model.ExchangeDeclare(ExchangeNames.EDIT, ExchangeType.Direct, durable: true, autoDelete: false);
+            //    model.QueueBind(QueueNames.EDIT + 1, ExchangeNames.EDIT, "");
+            //    model.BasicQos(prefetchSize: 0, prefetchCount: 20, global: true);
+            //}
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
