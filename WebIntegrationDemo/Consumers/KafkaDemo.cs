@@ -1,7 +1,7 @@
 ﻿using Confluent.Kafka;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
 
-namespace WebIntergrationDemo.Consumers
+namespace WebIntegrationDemo.Consumers
 {
     public class KafkaDemo
     {

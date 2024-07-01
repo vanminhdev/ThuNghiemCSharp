@@ -1,12 +1,15 @@
 
+using MassTransit;
 using MB.RabbitMQ.Configs;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
-using WebIntergrationDemo.Common;
-using WebIntergrationDemo.Services.Consumers;
-using WebIntergrationDemo.Services.Producers;
+using WebIntegrationDemo.Common;
+using WebIntegrationDemo.Consumers;
+using WebIntegrationDemo.Controllers;
+using WebIntegrationDemo.Services.Consumers;
+using WebIntegrationDemo.Services.Producers;
 
-namespace WebIntergrationDemo
+namespace WebIntegrationDemo
 {
     public class Program
     {
@@ -22,8 +25,20 @@ namespace WebIntergrationDemo
             builder.Services.AddSwaggerGen();
 
             builder.ConfigureRabbitMQ();
-            builder.Services.AddSingleton<EditProducer>();
-            builder.Services.AddSingleton<EditConsumer>();
+            //builder.Services.AddSingleton<EditProducer>();
+            //builder.Services.AddSingleton<EditConsumer>();
+
+            builder.Services.AddMassTransit(x =>
+            {
+                x.AddConsumer<YourConsumer>();
+
+                x.UsingInMemory((context, cfg) =>
+                {
+                    cfg.ConfigureEndpoints(context);
+                });
+            });
+
+            //builder.Services.AddMassTransitHostedService();
 
             var app = builder.Build();
 

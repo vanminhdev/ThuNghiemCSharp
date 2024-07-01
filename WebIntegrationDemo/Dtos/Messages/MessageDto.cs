@@ -1,4 +1,4 @@
-﻿namespace WebIntergrationDemo.Dtos.Messages
+﻿namespace WebIntegrationDemo.Dtos.Messages
 {
     public class MessageDto
     {

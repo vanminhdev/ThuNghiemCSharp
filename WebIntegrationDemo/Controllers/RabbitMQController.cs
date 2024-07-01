@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WebIntergrationDemo.Common;
-using WebIntergrationDemo.Consumers;
-using WebIntergrationDemo.Dtos.Messages;
-using WebIntergrationDemo.Services.Consumers;
-using WebIntergrationDemo.Services.Producers;
+using WebIntegrationDemo.Common;
+using WebIntegrationDemo.Consumers;
+using WebIntegrationDemo.Dtos.Messages;
+using WebIntegrationDemo.Services.Consumers;
+using WebIntegrationDemo.Services.Producers;
 
-namespace WebIntergrationDemo.Controllers
+namespace WebIntegrationDemo.Controllers
 {
     [Route("api/rabbit")]
     [ApiController]

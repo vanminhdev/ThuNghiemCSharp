@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using System.Text.Json;
 using System.Threading.Channels;
 
-namespace WebIntergrationDemo.Services.Producers
+namespace WebIntegrationDemo.Services.Producers
 {
     public class EditProducer : ProducerService
     {

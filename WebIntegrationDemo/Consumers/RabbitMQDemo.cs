@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using System.Text.Json;
 
-namespace WebIntergrationDemo.Consumers
+namespace WebIntegrationDemo.Consumers
 {
     public class RabbitMQDemo
     {

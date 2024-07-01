@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 using static System.Net.WebRequestMethods;
 
-namespace WebIntergrationDemo.Controllers
+namespace WebIntegrationDemo.Controllers
 {
     [Route("api/proxy/google")]
     [ApiController]
