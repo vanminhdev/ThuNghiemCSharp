@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebIntergrationDemo.Consumers;
+using WebIntegrationDemo.Consumers;
 
-namespace WebIntergrationDemo.Controllers
+namespace WebIntegrationDemo.Controllers
 {
     [Route("api/kafka")]
     [ApiController]

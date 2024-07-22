@@ -4,11 +4,11 @@ using Microsoft.Extensions.Options;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client;
 using System.Text.Json;
-using WebIntergrationDemo.Common;
-using WebIntergrationDemo.Dtos.Messages;
+using WebIntegrationDemo.Common;
+using WebIntegrationDemo.Dtos.Messages;
 using System.Threading;
 
-namespace WebIntergrationDemo.Services.Consumers
+namespace WebIntegrationDemo.Services.Consumers
 {
     public class EditConsumer : ConsumerService
     {

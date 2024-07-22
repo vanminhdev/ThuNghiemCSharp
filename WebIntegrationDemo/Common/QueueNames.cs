@@ -1,4 +1,4 @@
-﻿namespace WebIntergrationDemo.Common
+﻿namespace WebIntegrationDemo.Common
 {
     public static class QueueNames
     {
