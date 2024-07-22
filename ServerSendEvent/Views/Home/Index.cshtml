@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSE Example</title>
+</head>
+<body>
+    <h1>Server-Sent Events</h1>
+    <div id="messages"></div>
+
+    <script>
+        const eventSource = new EventSource('api/sse/events');
+
+        eventSource.onmessage = (event) => {
+            const newElement = document.createElement("div");
+            newElement.textContent = event.data;
+            document.getElementById("messages").appendChild(newElement);
+        };
+
+        eventSource.onerror = () => {
+            console.error("EventSource failed.");
+        };
+
+        function sendLogMessage(message) {
+            const url = '/api/sse/log'; // Endpoint URL
+            const data = JSON.stringify({ Message: message });
+            const blob = new Blob([data], { type: 'application/json' });
+
+            /**
+             * Use Case: Primarily designed for sending small amounts of data to the server when the page is unloading or in the background, without blocking the page from unloading. It's commonly used for analytics, logging out events, or tracking user actions as they leave a page.
+             * Asynchronous and Fire-and-Forget: It sends data asynchronously and does not provide any feedback on whether the data was successfully received by the server. The request is handed off to the browser to manage, allowing the page to unload without waiting for the request to complete.
+             * No Response Handling: Since it's a fire-and-forget approach, you cannot handle the response or catch errors after sending a beacon.
+             * Limited Data Types: It supports sending ArrayBuffer, ArrayBufferView, Blob, DOMString, FormData, and URLSearchParams objects.
+             * Headers: You cannot set custom headers. The Content-Type is automatically set based on the data type.
+             */
+            if (!navigator.sendBeacon(url, blob)) {
+                // Fallback for when sendBeacon is not available or fails
+                console.error('sendBeacon failed, using fetch as a fallback.');
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: data,
+                    keepalive: true // Important for ensuring the request is sent during page unload
+                }).catch(error => console.error('Fallback fetch failed:', error));
+            }
+        }
+
+        setInterval(() => {
+            sendLogMessage((new Date()).toISOString());
+        }, 10000);
+    </script>
+</body>
+</html>
